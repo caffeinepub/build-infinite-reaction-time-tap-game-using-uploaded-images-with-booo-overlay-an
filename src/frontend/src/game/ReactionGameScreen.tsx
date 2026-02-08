@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useReactionGame } from './useReactionGame';
 import { GAME_IMAGES } from './assets';
-import { shareReactionTime } from './share';
 import { Button } from '@/components/ui/button';
 import { Share2, RotateCcw, Play } from 'lucide-react';
 import ResultScreen from './ResultScreen';
 import SharePreviewScreen from './SharePreviewScreen';
 import { pixelStyles } from './pixelStyles';
+import { GAME_INTRO_TEXT } from './copy';
 
 export default function ReactionGameScreen() {
   const {
@@ -20,24 +20,7 @@ export default function ReactionGameScreen() {
     reset,
   } = useReactionGame();
 
-  const [shareMessage, setShareMessage] = useState<string | null>(null);
   const [showSharePreview, setShowSharePreview] = useState(false);
-
-  const handleShare = async () => {
-    if (lastReactionTime === null) return;
-    
-    const result = await shareReactionTime(lastReactionTime);
-    
-    if (result.success) {
-      if (result.method === 'clipboard') {
-        setShareMessage('Copied to clipboard!');
-        setTimeout(() => setShareMessage(null), 2000);
-      }
-    } else {
-      setShareMessage('Share failed');
-      setTimeout(() => setShareMessage(null), 2000);
-    }
-  };
 
   const handleShareButtonClick = () => {
     setShowSharePreview(true);
@@ -45,7 +28,6 @@ export default function ReactionGameScreen() {
 
   const handleCloseSharePreview = () => {
     setShowSharePreview(false);
-    setShareMessage(null);
   };
 
   // Show share preview screen when requested
@@ -53,9 +35,7 @@ export default function ReactionGameScreen() {
     return (
       <SharePreviewScreen 
         reactionTime={lastReactionTime}
-        onShare={handleShare}
         onClose={handleCloseSharePreview}
-        shareMessage={shareMessage}
       />
     );
   }
@@ -67,7 +47,6 @@ export default function ReactionGameScreen() {
         reactionTime={lastReactionTime}
         onShare={handleShareButtonClick}
         onPlayAgain={playAgain}
-        shareMessage={shareMessage}
       />
     );
   }
@@ -81,10 +60,12 @@ export default function ReactionGameScreen() {
       {/* Header HUD - glass panel */}
       <div className={`mb-6 text-center space-y-4 p-6 ${pixelStyles.glassPanel}`}>
         <h1 className={`text-xl md:text-2xl ${pixelStyles.heading} ${pixelStyles.statusSuccess}`}>
-          Milan 2026 olympic games reaction game!
+          boogame
         </h1>
         <p className={`text-xs md:text-sm ${pixelStyles.text} ${pixelStyles.statusReady}`}>
-          You also can be an Olympic winner!!
+          {GAME_INTRO_TEXT.line1}
+          <br />
+          {GAME_INTRO_TEXT.line2}
         </p>
         
         {/* Status indicator */}
@@ -213,15 +194,6 @@ export default function ReactionGameScreen() {
           </Button>
         )}
       </div>
-
-      {/* Share confirmation message */}
-      {shareMessage && (
-        <div className="mt-4 text-center">
-          <div className={`inline-block ${pixelStyles.toast} text-accent px-4 py-2 text-xs animate-in fade-in slide-in-from-bottom-2 duration-300`}>
-            {shareMessage}
-          </div>
-        </div>
-      )}
 
       {/* Footer */}
       <footer className={`mt-12 text-center text-xs ${pixelStyles.text} text-muted-foreground`}>

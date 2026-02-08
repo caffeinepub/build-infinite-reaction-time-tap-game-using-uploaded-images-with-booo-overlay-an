@@ -1,87 +1,54 @@
 {
   "kind": "build_request",
-  "title": "Swap Image B to IMG_5761 and add share-preview card before sharing",
+  "title": "Replace broken share-card download with screenshot/share instructions and improve reaction-time emphasis on share card",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-19",
-      "text": "Update the reaction game Image B static asset to use the newly uploaded file IMG_5761.png (the user’s “image two”), keeping Image A unchanged, and keep image references centralized in the existing frontend asset constants.",
+      "id": "REQ-29",
+      "text": "Remove the non-working share-card save/download behavior and replace it with an on-screen instruction on the Share Preview screen that tells the user to take a screenshot and share it on social media when native sharing is not available.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-4"
         ],
         "quotes": [
-          "Obrázek dva prikladam."
+          "Ukládací začít co. stále nefunguje. Ale nepotřebujeme ho. Můžem ho nahradit nápisem, výzvou aby si udělali screenshot a sdíleli na sociálních sítích."
         ]
       },
       "acceptanceCriteria": [
-        "`frontend/src/game/assets.ts` references Image B as `/assets/IMG_5761.png` via the existing `GAME_IMAGES.imageB` constant.",
-        "During gameplay, the target/reaction image shown in `ready` state is the new Image B (IMG_5761.png).",
-        "No backend image serving is introduced; the image is treated as a static frontend asset."
+        "On the Share Preview screen, there is a clearly visible instruction in English telling users to take a screenshot and share it on social media (e.g., \"If Share doesn’t work, take a screenshot and share it on social media.\").",
+        "Tapping the Share button no longer triggers an automatic file download as a fallback (no \"Image downloaded!\" toast).",
+        "If Web Share (with files) is unsupported or fails, the UI provides the screenshot instruction rather than attempting to download."
       ]
     },
     {
-      "id": "REQ-20",
-      "text": "Change the Result screen share flow so that clicking the existing “Share Result” button does NOT immediately invoke sharing/copying. Instead, it must open a new share-preview card/screen that shows Image B with the overlay text exactly “Booo!!!”, and below it shows the exact English text: “your reaction time to Boo is <XY>. Excellent!” where <XY> is replaced by the latest reaction time in milliseconds.",
+      "id": "REQ-30",
+      "text": "Update the Share Preview card layout so the reaction time value is larger and uses a more prominent, higher-contrast color than the surrounding sentence text, while keeping the existing exact sentence: “your reaction time to Boo is <XY>ms. Excellent!”",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-4"
         ],
         "quotes": [
-          "Chci aby když se zmáčkne za vyřešené tlačítko sdílet, aby se objevila nová karta kde bude opět obrázek dva na něm nápis Booo!!! \nPak tam bude: your reaction time to Boo is XY. Excellent!"
+          "Možná bych na sdílecí kartě zvětšil cislo Času reakční doby. A možná mu dali jinou, výraznější barvu."
         ]
       },
       "acceptanceCriteria": [
-        "On the Result screen, clicking “Share Result” opens a new UI surface (card/screen) without triggering `navigator.share` or clipboard operations.",
-        "The share-preview UI displays the current Image B (from `GAME_IMAGES.imageB`) and renders the overlay text exactly: “Booo!!!”.",
-        "The share-preview UI displays the exact sentence: “your reaction time to Boo is <XY>. Excellent!” with <XY> replaced by the measured reaction time value (number).",
-        "The Result screen remains accessible (e.g., via a Back/Close action) without starting a new game round."
-      ]
-    },
-    {
-      "id": "REQ-21",
-      "text": "Add explicit share actions inside the new share-preview card/screen: a primary action that performs the existing share behavior (Web Share API when available, otherwise copy-to-clipboard fallback using the existing share text logic), and a secondary action to close the preview and return to the Result screen.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages"
-        ],
-        "quotes": [
-          "...když se zmáčkne ... tlačítko sdílet, aby se objevila nová karta... (před samotným sdílením)"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The share-preview UI includes a button that triggers the existing `shareReactionTime(lastReactionTime)` behavior unchanged (same share text, same fallback).",
-        "The share-preview UI includes a visible Back/Close control that returns to the Result screen without sharing.",
-        "Existing share confirmation messaging (e.g., “Copied to clipboard!” / “Share failed”) still appears appropriately after the share action is executed."
-      ]
-    },
-    {
-      "id": "REQ-22",
-      "text": "Style the new share-preview card/screen to match the existing minimalist winter glass UI (use the existing shared styling utilities/classes such as `pixelStyles`), and ensure it works well on mobile and desktop (fits within the same max-width layout as the existing screens).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The share-preview UI uses the same visual language as other screens (glass panels, thin borders, pixel font) and does not introduce a new inconsistent theme.",
-        "The share-preview content is readable and does not overflow on common mobile widths; the image maintains the same aspect treatment as other game cards.",
-        "No gameplay tap-anywhere handler is active while the share-preview is shown (only share/close actions are interactive)."
+        "On the Share Preview card, the reaction time number is visually emphasized (larger font size than the surrounding text).",
+        "The reaction time number uses a more prominent color (e.g., accent/primary) than the surrounding sentence text, improving readability on the existing winter-glass background.",
+        "The user-facing sentence remains exactly: \"your reaction time to Boo is <XY>ms. Excellent!\" (with <XY> replaced by the measured reaction time in milliseconds)."
       ]
     }
   ],
   "constraints": [
-    "Frontend immutable paths must not be edited: `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, and anything under `frontend/src/components/ui`. Compose these components instead of modifying them.",
-    "Do not introduce backend image serving or external services; keep images as static frontend assets referenced via the existing `GAME_IMAGES` constants."
+    "Frontend immutable paths must not be edited: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Do not add backend logic; keep the backend as-is (single Motoko actor remains empty).",
+    "Use English for any new user-facing text."
   ],
   "nonGoals": [
-    "Do not change the share text used by the actual share operation (it must remain the existing text implemented in `frontend/src/game/share.ts`).",
-    "Do not change the core game state machine flow (idle/waiting/ready/success/result/tooEarly) beyond what is necessary to present the share-preview UI on share button click.",
-    "Do not add authentication or any backend persistence for results."
+    "Do not add or reintroduce a dedicated Download button on the Share Preview screen.",
+    "Do not change the existing game flow/state machine beyond what is needed for the share preview messaging and styling.",
+    "Do not implement any external/social-media API integrations."
   ],
   "imageRequirements": {
     "required": [],

@@ -7,6 +7,9 @@ export const pixelStyles = {
   heading: 'font-pixel text-shadow-none tracking-wider',
   text: 'font-pixel leading-relaxed',
   
+  // Emphasized number for reaction time display
+  emphasizedNumber: 'text-2xl md:text-3xl font-pixel text-accent font-bold',
+  
   // Game card/frame - minimalist with thin borders and glass effect
   card: 'rounded-lg border border-primary/30 shadow-pixel bg-card/20 backdrop-blur-md',
   cardActive: 'rounded-lg border border-accent/60 shadow-[0_0_0_1px_oklch(var(--accent)/0.6)] bg-card/30 backdrop-blur-md',
@@ -33,4 +36,3 @@ export const pixelStyles = {
   statusError: 'text-destructive',
   statusSuccess: 'text-accent',
 };
-

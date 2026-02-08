@@ -1,21 +1,24 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 13,
-  "summary": "Jednoduchá 2D reakční hra s nekonečným počtem kol: nejprve se zobrazí obrázek A, po náhodné prodlevě obrázek B (Vance). Po tapnutí se zobrazí text „Booo!!!“, změří se reakční čas a výsledek lze sdílet.",
+  "projectStateVersion": 19,
+  "summary": "Jednoduchá 2D reakční hra s nekonečným počtem kol: nejprve se zobrazí obrázek A, po náhodné prodlevě obrázek B (Vance). Po tapnutí se zobrazí text „Booo!!!“, změří se reakční čas, výsledek lze sdílet; sdílení má fungovat do telefonu jako sdílení screenshotu/obrázku sdílecí karty (bez nutnosti samostatného tlačítka pro stažení).",
   "architectural_notes": [
     "2D hra s tap ovládáním; herní smyčka: A -> (náhodná prodleva) -> B -> tap -> vyhodnocení -> další kolo.",
     "Asset pipeline má umožnit snadnou výměnu obrázků (aktuální fotky jako placeholder, později pixel-art 32×32).",
     "Upravit flow hry: po tapu na obrázek B přejít na samostatnou obrazovku výsledku (reakční doba + share), místo okamžitého pokračování do dalšího kola.",
     "Pozadí aplikace má být konfigurovatelné přes statický asset (uživatelem dodaný obrázek) a snadno vyměnitelné.",
     "UI styling posunout do pixel-art směru (pixel font, pixel/8-bit rámečky a linky) konzistentně napříč obrazovkami.",
-    "Nový směr vizuálu: minimalističtější pixel/retro UI (tenké linky), transparentní tlačítka/panely, zimní barevná paleta; upravit úvodní/instrukční texty na olympijské (Milan 2026).",
     "Počítat s rychlou výměnou Image A/B podle nově dodaných uživatelských obrázků (statické assety, centralizované reference).",
-    "Flow sdílení upravit tak, aby tlačítko Share nejprve otevřelo novou preview kartu/obrazovku (Image B + „Booo!!!“ + text s XY), a teprve z ní se spouštělo sdílení."
+    "Flow sdílení upravit tak, aby tlačítko Share nejprve otevřelo novou preview kartu/obrazovku (Image B + „Booo!!!“ + text s XY), a teprve z ní se spouštělo sdílení.",
+    "Texty v UI nemají obsahovat „olympijský/olympiáda“ apod.; používat neutrální wording (pouze „hry“).",
+    "Share preview karta má podporovat export/stáhnutí jako obrázek (např. PNG) z klienta.",
+    "Tlačítko Share na share-preview kartě má otevírat nativní share sheet se sdílením vygenerovaného obrázku/screenshotu karty (uložení do telefonu přes systémové sdílení), bez nutnosti samostatného tlačítka Download."
   ],
   "known_issues": [
-    "Aktuální build po zobrazení „Booo!!!“ hned pokračuje do dalšího kola a nezobrazuje reakční dobu ani sdílení — požadováno je přejít na obrazovku s výsledkem."
+    "Aktuální build po zobrazení „Booo!!!“ hned pokračuje do dalšího kola a nezobrazuje reakční dobu ani sdílení — požadováno je přejít na obrazovku s výsledkem.",
+    "Nefunguje ukládání/export (download) sdílecí karty; bude odstraněno/nahrazeno instrukcí pro screenshot (viz nové zadání)."
   ],
-  "isFixRequest": false,
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-single-screen-infinite-round-reaction-game-show-image-a-first-then-after-a-randomized-delay-switch-to-image-b-and-wait-for-the-player-to-click-tap-anywhere-on-the-game-area",
@@ -192,6 +195,70 @@
         "REQ-22"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-rename-the-game-to-boogame-in-all-visible-ui-headers-titles-and-remove-any-words-related-to-olympic-olympics-olympijsk-olympi-da-so-the-app-copy-references-only-generic-games-use-english-for-the-resulting-user-facing-text",
+      "title": "Rename the game to “boogame” in all visible UI headers/titles and remove any words related to “Olympic”/“Olympics”/“olympijský/olympiáda” so the app copy references only generic “games”. Use English for the resulting user-facing text.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-browser-tab-page-title-html-document-title-to-boogame",
+      "title": "Update the browser tab/page title (HTML document title) to “boogame”.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-option-on-the-share-preview-screen-to-download-the-share-preview-card-as-an-image-png-generated-client-side-from-the-rendered-share-preview-card-content-image-b-booo-overlay-the-reaction-time-message",
+      "title": "Add an option on the Share Preview screen to download the share preview card as an image (PNG) generated client-side from the rendered share preview card content (Image B + “Booo!!!” overlay + the reaction-time message).",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-share-preview-flow-so-that-tapping-the-primary-share-action-opens-the-phone-system-share-sheet-with-a-png-screenshot-of-the-rendered-share-preview-card-image-b-booo-overlay-the-reaction-time-message-use-the-web-share-api-with-files-when-available-if-the-browser-device-cannot-share-files-fall-back-to-a-reasonable-alternative-e-g-download-the-png-without-requiring-a-separate-download-button",
+      "title": "Update the Share Preview flow so that tapping the primary \"Share\" action opens the phone/system share sheet with a PNG screenshot of the rendered Share Preview card (Image B + “Booo!!!” overlay + the reaction-time message). Use the Web Share API with files when available; if the browser/device cannot share files, fall back to a reasonable alternative (e.g., download the PNG) without requiring a separate download button.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-dedicated-download-button-from-the-share-preview-screen-ui-or-otherwise-ensure-the-ui-does-not-require-a-separate-download-control-while-keeping-the-layout-consistent-with-the-existing-minimalist-winter-glass-styling",
+      "title": "Remove the dedicated Download button from the Share Preview screen UI (or otherwise ensure the UI does not require a separate download control) while keeping the layout consistent with the existing minimalist winter glass styling.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-app-s-intro-header-copy-to-the-following-exact-english-text-including-punctuation-and-line-breaks-wherever-the-primary-intro-header-text-is-shown-in-the-main-game-intro-area-and-corresponding-header-areas-milan-2026-reaction-game-you-also-can-be-an-winner",
+      "title": "Update the app’s intro/header copy to the following exact English text (including punctuation and line breaks) wherever the primary intro/header text is shown in the main game intro area and corresponding header areas: \n\n“Milan 2026 reaction game!”\n“You also can be an winner!!”",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-non-working-share-card-save-download-behavior-and-replace-it-with-an-on-screen-instruction-on-the-share-preview-screen-that-tells-the-user-to-take-a-screenshot-and-share-it-on-social-media-when-native-sharing-is-not-available",
+      "title": "Remove the non-working share-card save/download behavior and replace it with an on-screen instruction on the Share Preview screen that tells the user to take a screenshot and share it on social media when native sharing is not available.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-share-preview-card-layout-so-the-reaction-time-value-is-larger-and-uses-a-more-prominent-higher-contrast-color-than-the-surrounding-sentence-text-while-keeping-the-existing-exact-sentence-your-reaction-time-to-boo-is-xy-ms-excellent",
+      "title": "Update the Share Preview card layout so the reaction time value is larger and uses a more prominent, higher-contrast color than the surrounding sentence text, while keeping the existing exact sentence: “your reaction time to Boo is <XY>ms. Excellent!”",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -266,10 +333,46 @@
       "summary": "Po stisku tlačítka Sdílet na výsledkové obrazovce zobrazit novou kartu/obrazovku s obrázkem B, nápisem „Booo!!!“ a textem „your reaction time to Boo is XY. Excellent!“ (před samotným sdílením)",
       "reqIds": [],
       "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Změnit název hry na „boogame“ (hlavní titulek / název v UI)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Odstranit z textů v aplikaci slova „olympijský/olympiáda“ apod.; ponechat pouze obecné „hry“ (upravit intro/header copy)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Změnit úvodní text na: „Milan 2026 reaction game!“ + „You also can be an winner!!“ (včetně řádkování)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Sdílení sdílecí karty do telefonu: tlačítko „Sdílet“ má otevřít systémové sdílení s obrázkem/screenshotem karty; samostatné tlačítko „Download“ není nutné",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Nahradit nefunkční ukládací/download akci na sdílecí kartě textovou výzvou: udělej screenshot a sdílej na sociálních sítích (download není potřeba)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Upravit sdílecí kartu: zvětšit číslo reakční doby a dát mu výraznější barvu pro lepší čitelnost",
+      "reqIds": [],
+      "status": "pending"
     }
   ],
   "gameProjectType": "2d",
-  "projectName": "Build infinite reaction-time tap game using uploaded images, with 'Booo!!!' overlay and shareable result",
+  "projectName": "boogame",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

@@ -1,24 +1,34 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-08T10:15:15.406Z",
-  "summary": "REQ-19 through REQ-22 appear largely implemented: Image B now points to /assets/IMG_5761.png via GAME_IMAGES; share flow now opens a SharePreviewScreen showing Image B with “Booo!!!” overlay and the specified reaction-time sentence; preview includes Share (calls existing shareReactionTime) and Close actions; styling uses pixelStyles and is constrained to the same max-width layout.",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-08T10:57:35.446Z",
+  "summary": "REQ-30 is only partially met: the reaction-time number is larger, and the sentence text appears to match the required wording, but the number does not use a more prominent/higher-contrast color than the surrounding sentence. REQ-29 is partially evidenced: the download fallback appears removed and a screenshot/share hint is shown on share failure, but the diff does not show a clearly visible screenshot instruction being present on the Share Preview screen by default (it appears only after a failed/unsupported share).",
+  "missing_requirements": [
     {
-      "description": "Added promotional footer/link (“Built with love using caffeine.ai”) on the new SharePreviewScreen, which was not requested as part of the share-preview requirements.",
-      "reason": "BuildRequest only asks for a share-preview UI with specific image/overlay text, reaction-time sentence, and Share/Close actions; no footer or external link is mentioned.",
+      "id": "REQ-29",
+      "requirement": "On the Share Preview screen, there is a clearly visible instruction in English telling users to take a screenshot and share it on social media.",
+      "reason": "In the diff, the screenshot instruction UI is only rendered when `showScreenshotHint` is true, which is set only after share failure/unsupported; there is no evidence the instruction is clearly visible on the Share Preview screen without first attempting Share.",
       "evidence": [
+        "frontend/src/game/SharePreviewScreen.tsx"
+      ]
+    },
+    {
+      "id": "REQ-30",
+      "requirement": "The reaction time number uses a more prominent, higher-contrast color than the surrounding sentence text.",
+      "reason": "The surrounding sentence uses `pixelStyles.statusReady` which maps to `text-accent`, and the emphasized number style also uses `text-accent`, so the number is not a higher-contrast/more prominent color than the surrounding text (only larger/bolder).",
+      "evidence": [
+        "frontend/src/game/pixelStyles.ts",
         "frontend/src/game/SharePreviewScreen.tsx"
       ]
     }
   ],
+  "hallucinated_features": [],
   "confidence": 0.74,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/game/ReactionGameScreen.tsx",
     "frontend/src/game/SharePreviewScreen.tsx",
-    "frontend/src/game/assets.ts",
+    "frontend/src/game/pixelStyles.ts",
+    "frontend/src/game/share.ts",
     "project_state.json"
   ]
 }

@@ -1,38 +1,51 @@
-// Share functionality with Web Share API and clipboard fallback
+// Share functionality with Web Share API only
 
 export interface ShareResult {
   success: boolean;
-  method: 'webshare' | 'clipboard' | 'none';
+  method: 'webshare' | 'none';
   error?: string;
 }
 
-export async function shareReactionTime(reactionTimeMs: number): Promise<ShareResult> {
-  const shareText = `Nice, you have boooed Vance in ${reactionTimeMs} ms`;
-  
-  // Try Web Share API first (mobile-friendly)
-  if (navigator.share) {
+/**
+ * Share an image file using Web Share API
+ * Returns failure if Web Share is not available or user cancels
+ */
+export async function shareImageFile(
+  blob: Blob,
+  filename: string,
+  title: string,
+  text: string
+): Promise<ShareResult> {
+  // Create File object from blob
+  const file = new File([blob], filename, { type: blob.type });
+  const shareData = {
+    files: [file],
+    title,
+    text,
+  };
+
+  // Try Web Share API (mobile-friendly)
+  if (navigator.canShare && navigator.canShare(shareData)) {
     try {
-      await navigator.share({
-        text: shareText,
-      });
+      await navigator.share(shareData);
       return { success: true, method: 'webshare' };
     } catch (error) {
-      // User cancelled or share failed, fall through to clipboard
+      // User cancelled or share failed
       if (error instanceof Error && error.name === 'AbortError') {
         return { success: false, method: 'none', error: 'Share cancelled' };
       }
+      return { 
+        success: false, 
+        method: 'none', 
+        error: 'Share failed' 
+      };
     }
   }
   
-  // Fallback to clipboard
-  try {
-    await navigator.clipboard.writeText(shareText);
-    return { success: true, method: 'clipboard' };
-  } catch (error) {
-    return { 
-      success: false, 
-      method: 'none', 
-      error: 'Failed to copy to clipboard' 
-    };
-  }
+  // Web Share not available
+  return { 
+    success: false, 
+    method: 'none', 
+    error: 'Share not available' 
+  };
 }
