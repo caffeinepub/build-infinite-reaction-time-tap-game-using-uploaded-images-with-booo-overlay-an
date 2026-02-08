@@ -1,0 +1,14 @@
+{
+  "frontend/src/App.tsx": "Main app component that renders the reaction game screen with transparent background (global background visible through).",
+  "frontend/src/game/constants.ts": "Centralized game timing constants for delays, overlay durations, and penalties.",
+  "frontend/src/game/assets.ts": "Centralized image asset references with imageA pointing to IMG_5760.png (Olympic ceremony with US flag) and imageB now pointing to IMG_5761.png (new image with two people).",
+  "frontend/src/game/share.ts": "Share functionality with Web Share API support and clipboard fallback.",
+  "frontend/src/game/useReactionGame.ts": "Core game state machine hook with idle, waiting, ready, success (transient), result, and tooEarly states; manages timing logic and exposes playAgain action for explicit round restart from result screen.",
+  "frontend/src/game/ReactionGameScreen.tsx": "Main game UI component with minimalist winter glass styling that now toggles between ResultScreen and SharePreviewScreen when the share button is clicked, preventing direct share action until the preview is shown.",
+  "frontend/src/index.css": "Global styles with winter OKLCH color system (cool blues, icy cyans, cold grays), Press Start 2P font, and full-viewport background with dark scrim overlay for readability.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with pixel font family and minimalist subtle box shadows (reduced from heavy pixel-art shadows) for winter glass aesthetics.",
+  "frontend/src/game/ResultScreen.tsx": "Dedicated result screen component with minimalist winter glass styling (transparent panels, thin borders, backdrop-blur), updated header text matching the new intro, and glass-effect result card and buttons.",
+  "frontend/index.html": "HTML entry point with Press Start 2P pixel-art font loaded from Google Fonts.",
+  "frontend/src/game/pixelStyles.ts": "Centralized minimalist winter glass style constants with thin borders (1px), transparent/semi-transparent backgrounds with backdrop-blur, and winter palette colors for consistent styling across all game screens.",
+  "frontend/src/game/SharePreviewScreen.tsx": "New share preview screen component that displays Image B with \"Booo!!!\" overlay and the reaction time message \"your reaction time to Boo is XY. Excellent!\" with Share and Close action buttons using minimalist winter glass styling."
+}

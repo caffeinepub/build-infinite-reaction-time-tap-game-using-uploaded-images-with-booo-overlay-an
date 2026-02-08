@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+        
+        /* Winter color system - cool, icy palette */
+        --background: 0.15 0.02 240;
+        --foreground: 0.98 0.03 220;
+        --card: 0.25 0.04 230;
+        --card-foreground: 0.95 0.03 220;
+        --popover: 0.28 0.04 230;
+        --popover-foreground: 0.95 0.03 220;
+        
+        /* Primary: Icy cyan */
+        --primary: 0.75 0.12 200;
+        --primary-foreground: 0.15 0.02 240;
+        
+        /* Secondary: Cool steel blue */
+        --secondary: 0.45 0.08 240;
+        --secondary-foreground: 0.95 0.03 220;
+        
+        /* Muted: Cold gray */
+        --muted: 0.40 0.03 240;
+        --muted-foreground: 0.70 0.03 230;
+        
+        /* Accent: Bright ice blue */
+        --accent: 0.80 0.15 210;
+        --accent-foreground: 0.15 0.02 240;
+        
+        /* Destructive: Cool red */
+        --destructive: 0.60 0.18 20;
+        --destructive-foreground: 0.98 0.02 220;
+        
+        --border: 0.50 0.05 230;
+        --input: 0.40 0.05 235;
+        --ring: 0.75 0.12 200;
+        
+        --chart-1: 0.75 0.12 200;
+        --chart-2: 0.80 0.15 210;
+        --chart-3: 0.65 0.10 230;
+        --chart-4: 0.60 0.18 20;
+        --chart-5: 0.70 0.12 250;
+    }
+
+    .dark {
+        --background: 0.15 0.02 240;
+        --foreground: 0.98 0.03 220;
+        --card: 0.25 0.04 230;
+        --card-foreground: 0.95 0.03 220;
+        --popover: 0.28 0.04 230;
+        --popover-foreground: 0.95 0.03 220;
+        --primary: 0.75 0.12 200;
+        --primary-foreground: 0.15 0.02 240;
+        --secondary: 0.45 0.08 240;
+        --secondary-foreground: 0.95 0.03 220;
+        --muted: 0.40 0.03 240;
+        --muted-foreground: 0.70 0.03 230;
+        --accent: 0.80 0.15 210;
+        --accent-foreground: 0.15 0.02 240;
+        --destructive: 0.60 0.18 20;
+        --destructive-foreground: 0.98 0.02 220;
+        --border: 0.50 0.05 230;
+        --input: 0.40 0.05 235;
+        --ring: 0.75 0.12 200;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'Press Start 2P', monospace;
+        line-height: 1.6;
+    }
+
+    /* Global background with scrim */
+    #root {
+        position: relative;
+        min-height: 100vh;
+    }
+
+    #root::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/assets/IMG_5763.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+    }
+
+    #root::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: -1;
+    }
+}
+

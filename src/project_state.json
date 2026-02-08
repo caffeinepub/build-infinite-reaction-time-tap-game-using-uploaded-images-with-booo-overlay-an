@@ -1,0 +1,275 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 13,
+  "summary": "Jednoduchá 2D reakční hra s nekonečným počtem kol: nejprve se zobrazí obrázek A, po náhodné prodlevě obrázek B (Vance). Po tapnutí se zobrazí text „Booo!!!“, změří se reakční čas a výsledek lze sdílet.",
+  "architectural_notes": [
+    "2D hra s tap ovládáním; herní smyčka: A -> (náhodná prodleva) -> B -> tap -> vyhodnocení -> další kolo.",
+    "Asset pipeline má umožnit snadnou výměnu obrázků (aktuální fotky jako placeholder, později pixel-art 32×32).",
+    "Upravit flow hry: po tapu na obrázek B přejít na samostatnou obrazovku výsledku (reakční doba + share), místo okamžitého pokračování do dalšího kola.",
+    "Pozadí aplikace má být konfigurovatelné přes statický asset (uživatelem dodaný obrázek) a snadno vyměnitelné.",
+    "UI styling posunout do pixel-art směru (pixel font, pixel/8-bit rámečky a linky) konzistentně napříč obrazovkami.",
+    "Nový směr vizuálu: minimalističtější pixel/retro UI (tenké linky), transparentní tlačítka/panely, zimní barevná paleta; upravit úvodní/instrukční texty na olympijské (Milan 2026).",
+    "Počítat s rychlou výměnou Image A/B podle nově dodaných uživatelských obrázků (statické assety, centralizované reference).",
+    "Flow sdílení upravit tak, aby tlačítko Share nejprve otevřelo novou preview kartu/obrazovku (Image B + „Booo!!!“ + text s XY), a teprve z ní se spouštělo sdílení."
+  ],
+  "known_issues": [
+    "Aktuální build po zobrazení „Booo!!!“ hned pokračuje do dalšího kola a nezobrazuje reakční dobu ani sdílení — požadováno je přejít na obrazovku s výsledkem."
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-single-screen-infinite-round-reaction-game-show-image-a-first-then-after-a-randomized-delay-switch-to-image-b-and-wait-for-the-player-to-click-tap-anywhere-on-the-game-area",
+      "title": "Create a single-screen infinite-round reaction game: show Image A first, then after a randomized delay switch to Image B and wait for the player to click/tap anywhere on the game area.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-measure-and-display-the-player-s-reaction-time-as-milliseconds-from-the-moment-image-b-becomes-visible-to-the-moment-the-player-clicks-taps",
+      "title": "Measure and display the player’s reaction time as milliseconds from the moment Image B becomes visible to the moment the player clicks/taps.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-player-taps-while-image-b-is-visible-show-an-overlay-text-exactly-booo-with-a-brief-animation-or-fade-on-top-of-the-image",
+      "title": "When the player taps while Image B is visible, show an overlay text exactly: “Booo!!!” (with a brief animation or fade) on top of the image.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-penalty-for-premature-taps-tapping-while-image-a-is-still-shown-show-a-clear-message-english-indicating-it-was-too-early-wait-briefly-then-restart-the-round-with-image-a",
+      "title": "Implement a penalty for premature taps (tapping while Image A is still shown): show a clear message (English) indicating it was too early, wait briefly, then restart the round with Image A.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-share-action-that-shares-the-latest-successful-reaction-result-using-the-text-nice-you-have-boooed-vance-in-x-ms-use-web-share-api-when-available-otherwise-provide-a-one-click-copy-to-clipboard-fallback",
+      "title": "Add a Share action that shares the latest successful reaction result using the text: “Nice, you have boooed Vance in <X> ms”. Use Web Share API when available, otherwise provide a one-click “Copy to clipboard” fallback.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-use-the-two-uploaded-images-as-the-current-game-assets-image-a-img-5759-jpeg-and-image-b-img-5758-png-stored-as-static-frontend-assets-no-backend-image-serving-make-it-easy-to-replace-them-later-with-pixel-art-versions-by-keeping-image-references-centralized-e-g-a-small-constants-file",
+      "title": "Use the two uploaded images as the current game assets: Image A = IMG_5759.jpeg and Image B = IMG_5758.png, stored as static frontend assets (no backend image serving). Make it easy to replace them later with pixel-art versions by keeping image references centralized (e.g., a small constants file).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-playful-arcade-style-visual-theme-not-blue-purple-dominant-consistent-typography-spacing-and-a-simple-hud-for-status-e-g-waiting-tap-now-last-time",
+      "title": "Apply a coherent, playful arcade-style visual theme (not blue/purple-dominant): consistent typography, spacing, and a simple HUD for status (e.g., “Waiting…”, “Tap now!”, last time).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-change-the-game-flow-so-that-after-a-successful-tap-while-image-b-is-visible-the-game-does-not-immediately-start-the-next-round-instead-it-must-transition-to-a-dedicated-result-screen-that-persists-until-the-player-explicitly-starts-the-next-round",
+      "title": "Change the game flow so that after a successful tap (while Image B is visible), the game does not immediately start the next round; instead, it must transition to a dedicated result screen that persists until the player explicitly starts the next round.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-game-state-machine-usereactiongame-hook-to-support-an-explicit-result-state-that-stores-the-last-successful-reaction-time-and-allows-starting-a-new-round-only-via-a-user-action",
+      "title": "Update the game state machine (useReactionGame hook) to support an explicit result state that stores the last successful reaction time and allows starting a new round only via a user action.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-dedicated-result-screen-ui-that-displays-the-most-recent-successful-reaction-time-in-milliseconds-and-provides-sharing-controls-using-the-existing-share-text-and-mechanisms",
+      "title": "Implement the dedicated result screen UI that displays the most recent successful reaction time in milliseconds and provides sharing controls using the existing share text and mechanisms.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-adjust-the-existing-reactiongamescreen-layout-so-gameplay-interactions-tap-anywhere-are-disabled-on-the-result-screen-and-are-only-active-during-live-rounds",
+      "title": "Adjust the existing ReactionGameScreen layout so gameplay interactions (tap-anywhere) are disabled on the result screen and are only active during live rounds.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-use-the-uploaded-image-img-5763-png-as-the-global-application-background-behind-both-the-gameplay-screen-and-the-result-screen-rendered-as-a-full-viewport-background-that-remains-consistent-across-the-entire-app",
+      "title": "Use the uploaded image IMG_5763.png as the global application background (behind both the gameplay screen and the result screen), rendered as a full-viewport background that remains consistent across the entire app.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-application-ui-styling-typography-and-line-border-treatments-to-a-cohesive-pixel-art-style-including-pixel-style-fonts-and-crisp-game-like-borders-for-key-ui-surfaces-game-card-hud-text-buttons-result-card-and-share-toast",
+      "title": "Update the application UI styling (typography and line/border treatments) to a cohesive pixel-art style, including pixel-style fonts and crisp, game-like borders for key UI surfaces (game card, HUD text, buttons, result card, and share toast).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-ui-styling-to-a-minimalist-look-with-thinner-lines-borders-throughout-the-app-game-card-hud-buttons-toasts-overlays-replacing-the-current-thick-pixel-art-border-shadow-feel",
+      "title": "Update the UI styling to a minimalist look with thinner lines/borders throughout the app (game card, HUD, buttons, toasts, overlays), replacing the current thick pixel-art border/shadow feel.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-buttons-and-text-panels-visually-transparent-glass-see-through-effect-use-semi-transparent-backgrounds-for-panels-and-buttons-while-keeping-text-legible-on-top-of-the-global-background",
+      "title": "Make buttons and text panels visually transparent (glass/see-through effect): use semi-transparent backgrounds for panels and buttons while keeping text legible on top of the global background.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-winter-color-palette-across-the-ui-cool-icy-tones-by-updating-the-app-theme-variables-and-any-hard-coded-ui-colors-to-match-the-winter-palette-consistently",
+      "title": "Apply a winter color palette across the UI (cool/icy tones) by updating the app theme variables and any hard-coded UI colors to match the winter palette consistently.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-app-s-intro-header-text-with-the-following-exact-english-text-including-punctuation-and-line-breaks-milan-2026-olympic-games-reaction-game-you-also-can-be-an-olympic-winner-ensure-this-text-appears-in-the-main-game-intro-area-and-is-also-reflected-wherever-the-primary-title-header-is-shown",
+      "title": "Replace the app’s intro/header text with the following exact English text (including punctuation and line breaks):\n\n“Milan 2026 olympic games reaction game!”\n“You also can be an Olympic winner!!”\n\nEnsure this text appears in the main game intro area and is also reflected wherever the primary title/header is shown.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-reaction-game-s-image-a-the-initial-waiting-state-image-with-the-newly-uploaded-static-asset-img-5760-png-keeping-image-b-unchanged-until-the-second-new-image-is-provided",
+      "title": "Replace the reaction game’s Image A (the initial/waiting-state image) with the newly uploaded static asset IMG_5760.png, keeping Image B unchanged until the second new image is provided.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-reaction-game-image-b-static-asset-to-use-the-newly-uploaded-file-img-5761-png-the-user-s-image-two-keeping-image-a-unchanged-and-keep-image-references-centralized-in-the-existing-frontend-asset-constants",
+      "title": "Update the reaction game Image B static asset to use the newly uploaded file IMG_5761.png (the user’s “image two”), keeping Image A unchanged, and keep image references centralized in the existing frontend asset constants.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-change-the-result-screen-share-flow-so-that-clicking-the-existing-share-result-button-does-not-immediately-invoke-sharing-copying-instead-it-must-open-a-new-share-preview-card-screen-that-shows-image-b-with-the-overlay-text-exactly-booo-and-below-it-shows-the-exact-english-text-your-reaction-time-to-boo-is-xy-excellent-where-xy-is-replaced-by-the-latest-reaction-time-in-milliseconds",
+      "title": "Change the Result screen share flow so that clicking the existing “Share Result” button does NOT immediately invoke sharing/copying. Instead, it must open a new share-preview card/screen that shows Image B with the overlay text exactly “Booo!!!”, and below it shows the exact English text: “your reaction time to Boo is <XY>. Excellent!” where <XY> is replaced by the latest reaction time in milliseconds.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-explicit-share-actions-inside-the-new-share-preview-card-screen-a-primary-action-that-performs-the-existing-share-behavior-web-share-api-when-available-otherwise-copy-to-clipboard-fallback-using-the-existing-share-text-logic-and-a-secondary-action-to-close-the-preview-and-return-to-the-result-screen",
+      "title": "Add explicit share actions inside the new share-preview card/screen: a primary action that performs the existing share behavior (Web Share API when available, otherwise copy-to-clipboard fallback using the existing share text logic), and a secondary action to close the preview and return to the Result screen.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-style-the-new-share-preview-card-screen-to-match-the-existing-minimalist-winter-glass-ui-use-the-existing-shared-styling-utilities-classes-such-as-pixelstyles-and-ensure-it-works-well-on-mobile-and-desktop-fits-within-the-same-max-width-layout-as-the-existing-screens",
+      "title": "Style the new share-preview card/screen to match the existing minimalist winter glass UI (use the existing shared styling utilities/classes such as `pixelStyles`), and ensure it works well on mobile and desktop (fits within the same max-width layout as the existing screens).",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Nekonečný režim kol: zobrazit obrázek A, po náhodné prodlevě přepnout na obrázek B a čekat na tap",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Měření reakční doby (timestamp při zobrazení obrázku B vs. timestamp tapu) a zobrazení výsledku",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Po tapnutí na obrázek B zobrazit overlay text „Booo!!!“",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Sdílení výsledku s textem ve stylu „Nice, you have boooed Vance in XY ms“",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Podpora assetů: použít dodané obrázky nyní, později možnost nahradit pixel-art verzemi (32×32, zjednodušená paleta, realističtější styl)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Po úspěšném tapu (když je zobrazen obrázek B) nepokračovat hned do dalšího kola; místo toho zobrazit samostatnou stránku/obrazovku s naměřenou reakční dobou a možností sdílení",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Použít uživatelem dodaný obrázek jako pozadí aplikace (background)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Upravit vizuál UI do pixel-art stylu (linky/rámečky, typografie/fonty)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Upravit UI design na minimalističtější: užší linky/rámečky, průhledná tlačítka a průhledné panely s nápisy",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Použít zimní paletu barev v UI a změnit úvodní text na: „Milan 2026 olympic games reaction game!“ + „You also can be an Olympic winner!!“",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Vyměnit herní assety: nahradit současné obrázky A a B nově dodanými obrázky od uživatele (uživatel pošle obrázek 1 a obrázek 2)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Po stisku tlačítka Sdílet na výsledkové obrazovce zobrazit novou kartu/obrazovku s obrázkem B, nápisem „Booo!!!“ a textem „your reaction time to Boo is XY. Excellent!“ (před samotným sdílením)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "2d",
+  "projectName": "Build infinite reaction-time tap game using uploaded images, with 'Booo!!!' overlay and shareable result",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

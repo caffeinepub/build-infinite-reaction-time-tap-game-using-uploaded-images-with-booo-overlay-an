@@ -1,0 +1,22 @@
+{
+  "backend/main.mo": "Minimal Motoko actor with no logic.",
+  "feature_evidence.json": "Feature evidence report listing implemented features, related files, components, and test IDs.",
+  "frontend-file-summaries.txt": "Text file summarizing the purpose of each frontend source file for reference.",
+  "frontend/index.css": "Global Tailwind CSS setup defining OKLCH color variables, themes, and base styles.",
+  "frontend/index.html": "HTML entry point loading fonts and mounting the React app.",
+  "frontend/src/App.tsx": "Root component that centers and renders the ReactionGameScreen.",
+  "frontend/src/game/assets.ts": "Centralized image paths for Image A and Image B.",
+  "frontend/src/game/constants.ts": "Holds configurable timing constants for game delays, overlays, and penalties.",
+  "frontend/src/game/pixelStyles.ts": "Shared minimalist winter glass UI class presets for consistent styling.",
+  "frontend/src/game/ReactionGameScreen.tsx": "Main game controller UI handling gameplay flow, result display, and share preview routing.",
+  "frontend/src/game/ResultScreen.tsx": "Displays the player's reaction time with buttons to replay or open the share preview.",
+  "frontend/src/game/share.ts": "Implements share logic using Web Share API with clipboard fallback.",
+  "frontend/src/game/SharePreviewScreen.tsx": "Shows Image B with 'Booo!!!' overlay and reaction message plus share and close actions.",
+  "frontend/src/game/useReactionGame.ts": "Custom hook managing reaction-game state transitions, random delay timing, premature tap penalties, and reaction-time calculation.",
+  "frontend/src/hooks/useActor.ts": "Creates and manages a backend actor tied to Internet Identity, refetching dependent queries when identity changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides Internet Identity context with login, logout, stored-identity initialization, and status management.",
+  "frontend/src/index.css": "Global Tailwind-based styling with a winter color palette, pixel font, and background image scrim.",
+  "frontend/src/main.tsx": "App entry point setting up React Query and Internet Identity provider before rendering the app.",
+  "frontend/tailwind.config.js": "Tailwind config extending theme colors from CSS variables, adding pixel fonts, shadows, animations, and plugins.",
+  "project_state.json": "Project metadata describing the reaction game, design direction, architecture notes, known issues, and existing features."
+}

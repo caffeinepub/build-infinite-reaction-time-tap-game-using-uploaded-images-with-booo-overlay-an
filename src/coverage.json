@@ -1,0 +1,79 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T10:15:15.409Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 4,
+    "implemented": 4,
+    "items": [
+      {
+        "id": "REQ-19",
+        "summary": "Update the reaction game Image B static asset to use the newly uploaded file IMG_5761.png (the user’s “image two”), keeping Image A unchanged, and keep image references centralized in the existing frontend asset constants.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/game/assets.ts",
+          "frontend/public/assets/IMG_5761.png"
+        ],
+        "matchedFiles": [
+          "frontend/src/game/assets.ts"
+        ]
+      },
+      {
+        "id": "REQ-20",
+        "summary": "Change the Result screen share flow so that clicking the existing “Share Result” button does NOT immediately invoke sharing/copying. Instead, it must open a new share-preview card/screen that shows Image B with the overlay text exactly “Booo!!!”, and below it shows the exact English text: “your reaction time to Boo is <XY>. Excellent!” where <XY> is replaced by the latest reaction time in milliseconds.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/game/SharePreviewScreen.tsx",
+          "frontend/src/game/ReactionGameScreen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/game/SharePreviewScreen.tsx",
+          "frontend/src/game/ReactionGameScreen.tsx"
+        ]
+      },
+      {
+        "id": "REQ-21",
+        "summary": "Add explicit share actions inside the new share-preview card/screen: a primary action that performs the existing share behavior (Web Share API when available, otherwise copy-to-clipboard fallback using the existing share text logic), and a secondary action to close the preview and return to the Result screen.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/game/ReactionGameScreen.tsx",
+          "frontend/src/game/SharePreviewScreen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/game/ReactionGameScreen.tsx",
+          "frontend/src/game/SharePreviewScreen.tsx"
+        ]
+      },
+      {
+        "id": "REQ-22",
+        "summary": "Style the new share-preview card/screen to match the existing minimalist winter glass UI (use the existing shared styling utilities/classes such as `pixelStyles`), and ensure it works well on mobile and desktop (fits within the same max-width layout as the existing screens).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/game/SharePreviewScreen.tsx",
+          "frontend/src/game/ReactionGameScreen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/game/SharePreviewScreen.tsx",
+          "frontend/src/game/ReactionGameScreen.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/game/ReactionGameScreen.tsx",
+    "frontend/src/game/SharePreviewScreen.tsx",
+    "frontend/src/game/assets.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

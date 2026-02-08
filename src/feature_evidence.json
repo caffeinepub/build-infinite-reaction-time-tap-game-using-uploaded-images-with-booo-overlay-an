@@ -1,0 +1,80 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-update-the-reaction-game-image-b-static-asset-to-use-the-newly-uploaded-file-img-5761-png-the-user-s-image-two-keeping-image-a-unchanged-and-keep-image-references-centralized-in-the-existing-frontend-asset-constants",
+      "featureTitle": "Update the reaction game Image B static asset to use the newly uploaded file IMG_5761.png (the user’s “image two”), keeping Image A unchanged, and keep image references centralized in the existing frontend asset constants.",
+      "files": [
+        "frontend/src/game/assets.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-19"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-change-the-result-screen-share-flow-so-that-clicking-the-existing-share-result-button-does-not-immediately-invoke-sharing-copying-instead-it-must-open-a-new-share-preview-card-screen-that-shows-image-b-with-the-overlay-text-exactly-booo-and-below-it-shows-the-exact-english-text-your-reaction-time-to-boo-is-xy-excellent-where-xy-is-replaced-by-the-latest-reaction-time-in-milliseconds",
+      "featureTitle": "Change the Result screen share flow so that clicking the existing “Share Result” button does NOT immediately invoke sharing/copying. Instead, it must open a new share-preview card/screen that shows Image B with the overlay text exactly “Booo!!!”, and below it shows the exact English text: “your reaction time to Boo is <XY>. Excellent!” where <XY> is replaced by the latest reaction time in milliseconds.",
+      "files": [
+        "frontend/src/game/ReactionGameScreen.tsx",
+        "frontend/src/game/SharePreviewScreen.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-20"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-explicit-share-actions-inside-the-new-share-preview-card-screen-a-primary-action-that-performs-the-existing-share-behavior-web-share-api-when-available-otherwise-copy-to-clipboard-fallback-using-the-existing-share-text-logic-and-a-secondary-action-to-close-the-preview-and-return-to-the-result-screen",
+      "featureTitle": "Add explicit share actions inside the new share-preview card/screen: a primary action that performs the existing share behavior (Web Share API when available, otherwise copy-to-clipboard fallback using the existing share text logic), and a secondary action to close the preview and return to the Result screen.",
+      "files": [
+        "frontend/src/game/ReactionGameScreen.tsx",
+        "frontend/src/game/SharePreviewScreen.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-21"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-style-the-new-share-preview-card-screen-to-match-the-existing-minimalist-winter-glass-ui-use-the-existing-shared-styling-utilities-classes-such-as-pixelstyles-and-ensure-it-works-well-on-mobile-and-desktop-fits-within-the-same-max-width-layout-as-the-existing-screens",
+      "featureTitle": "Style the new share-preview card/screen to match the existing minimalist winter glass UI (use the existing shared styling utilities/classes such as `pixelStyles`), and ensure it works well on mobile and desktop (fits within the same max-width layout as the existing screens).",
+      "files": [
+        "frontend/src/game/ReactionGameScreen.tsx",
+        "frontend/src/game/SharePreviewScreen.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-22"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

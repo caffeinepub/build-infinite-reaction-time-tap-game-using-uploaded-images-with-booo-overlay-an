@@ -1,0 +1,92 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Swap Image B asset and add share-preview UI before sharing",
+  "requirements": [
+    {
+      "id": "REQ-19",
+      "summary": "Swap Reaction Game Image B to use static asset IMG_5761.png via existing centralized GAME_IMAGES constant (leave Image A unchanged).",
+      "acceptanceCriteria": [
+        "`frontend/src/game/assets.ts` references Image B as `/assets/IMG_5761.png` via the existing `GAME_IMAGES.imageB` constant.",
+        "During gameplay, the target/reaction image shown in `ready` state is the new Image B (IMG_5761.png).",
+        "No backend image serving is introduced; the image is treated as a static frontend asset."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/game/assets.ts",
+          "operation": "modify",
+          "description": "Update `GAME_IMAGES.imageB` to reference `/assets/IMG_5761.png`, keeping `GAME_IMAGES.imageA` unchanged."
+        },
+        {
+          "path": "frontend/public/assets/IMG_5761.png",
+          "operation": "create",
+          "description": "Add the static asset file IMG_5761.png to the public assets folder so `/assets/IMG_5761.png` resolves at runtime."
+        }
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "summary": "Change Result screen share flow: clicking “Share Result” opens a share-preview card/screen showing Image B with “Booo!!!” overlay and the specified English sentence with the latest reaction time.",
+      "acceptanceCriteria": [
+        "On the Result screen, clicking “Share Result” opens a new UI surface (card/screen) without triggering `navigator.share` or clipboard operations.",
+        "The share-preview UI displays the current Image B (from `GAME_IMAGES.imageB`) and renders the overlay text exactly: “Booo!!!”.",
+        "The share-preview UI displays the exact sentence: “your reaction time to Boo is <XY>. Excellent!” with <XY> replaced by the measured reaction time value (number).",
+        "The Result screen remains accessible (e.g., via a Back/Close action) without starting a new game round."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/game/SharePreviewScreen.tsx",
+          "operation": "create",
+          "description": "Create a new share-preview screen/card component that renders `GAME_IMAGES.imageB` with an overlay text “Booo!!!” and below it the exact sentence “your reaction time to Boo is <XY>. Excellent!” using the latest reaction time passed via props. Use existing `pixelStyles` and existing Button component. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/ReactionGameScreen.tsx",
+          "operation": "modify",
+          "description": "Refactor the Result-state rendering to support toggling between the existing `ResultScreen` and the new `SharePreviewScreen`. Change the Result screen’s “Share Result” click handler to only open the share-preview UI (no share/copy), while preserving the current game state and last reaction time."
+        }
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "summary": "Add explicit share and close actions within share-preview: primary action executes existing share behavior; secondary action closes preview to return to Result screen.",
+      "acceptanceCriteria": [
+        "The share-preview UI includes a button that triggers the existing `shareReactionTime(lastReactionTime)` behavior unchanged (same share text, same fallback).",
+        "The share-preview UI includes a visible Back/Close control that returns to the Result screen without sharing.",
+        "Existing share confirmation messaging (e.g., “Copied to clipboard!” / “Share failed”) still appears appropriately after the share action is executed."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/game/ReactionGameScreen.tsx",
+          "operation": "modify",
+          "description": "Reuse the existing `handleShare` logic (which calls `shareReactionTime(lastReactionTime)` and sets share confirmation messaging) as the share action invoked from the share-preview. Add a close handler that hides the preview and returns to `ResultScreen` without starting a new round."
+        },
+        {
+          "path": "frontend/src/game/SharePreviewScreen.tsx",
+          "operation": "modify",
+          "description": "Add two explicit actions: (1) primary Share button that calls an `onShare` prop wired to existing share behavior, and (2) secondary Close/Back button that calls an `onClose` prop to return to the Result screen. Render any passed `shareMessage` using the existing toast styling. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-22",
+      "summary": "Style the share-preview UI to match the existing minimalist winter glass aesthetic, be responsive, and ensure no gameplay tap-anywhere handler is active while preview is shown.",
+      "acceptanceCriteria": [
+        "The share-preview UI uses the same visual language as other screens (glass panels, thin borders, pixel font) and does not introduce a new inconsistent theme.",
+        "The share-preview content is readable and does not overflow on common mobile widths; the image maintains the same aspect treatment as other game cards.",
+        "No gameplay tap-anywhere handler is active while the share-preview is shown (only share/close actions are interactive)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/game/SharePreviewScreen.tsx",
+          "operation": "modify",
+          "description": "Apply existing `pixelStyles` (glass panels/cards/buttons/overlay typography) to the share-preview layout, keep the same max-width container as other screens, and use the same aspect ratio treatment for the image. Ensure the preview surface does not attach any tap-to-play handlers; only the share/close buttons should be interactive. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/ReactionGameScreen.tsx",
+          "operation": "modify",
+          "description": "When the share-preview is visible, render it as the sole interactive surface for the result flow so no gameplay click handler can be triggered behind it, while keeping navigation back to the Result screen available without starting a new round."
+        }
+      ]
+    }
+  ]
+}

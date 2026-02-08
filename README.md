@@ -1,2 +1,3 @@
-# build-infinite-reaction-time-tap-game-using-uploaded-images-with-booo-overlay-an
-Exported from Caffeine project: Build infinite reaction-time tap game using uploaded images, with 'Booo!!!' overlay and shareable result
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`
